@@ -1,0 +1,10 @@
+{
+    "/api": {
+      "target": "https://www.yr.no/api/v0/locations/Suggest?q=Oslo&lat=39.91382&lon=116.36363&accuracy=1000&language=nn",
+      "secure": false,
+      "changeOrigin": true,
+      "pathRewrite": {
+        "^/api": ""
+      }
+    }
+  }
