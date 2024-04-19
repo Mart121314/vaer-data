@@ -1,5 +1,5 @@
 body {
-    background-image: url('assets/sola.jpg') !important;
+    background-image: url('../assets/sola.jpg') !important;
     background-size: cover !important;
     background-repeat: no-repeat !important;
   }
