@@ -1,13 +1,11 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { appConfig } from './app/app.config';
 import { AppComponent } from './app/app.component';
-import { HttpClientModule} from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 
-@NgModule({
-  imports: [HttpClientModule],
-})  
-export class AppModule {}
-
-bootstrapApplication(AppComponent, appConfig)
-  .catch((err) => console.error(err));
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideHttpClient(withFetch()), // Configures HttpClient to use fetch API
+    ...appConfig.providers // if you have other providers from appConfig
+  ],
+}).catch((err) => console.error(err));

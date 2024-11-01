@@ -1,40 +1,62 @@
-<body style="background-image: url('assets/sola.jpg'); background-size: cover; background-repeat: no-repeat;">
-<div class="container">
-  <div class="row">
-    <div class="col-md-6 offset-md-3">
-      <h1 class="text-center mb-3">Weather Forecast</h1>
-      <form (ngSubmit)="searchWeather()" class="mb-3">
-        <div class="input-group">
-          <input type="text" [(ngModel)]="location" name="location" class="form-control" placeholder="Enter a location" required>
-          <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="submit">Search</button>
+<div style="background-image: url('assets/sola.jpg'); background-size: cover; background-repeat: no-repeat;">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <h1 class="text-center mb-3">Weather Forecast</h1>
+        
+        <!-- Search form -->
+        <form (ngSubmit)="searchWeather()" class="mb-3">
+          <div class="input-group">
+            <input
+              type="text"
+              [(ngModel)]="location"
+              name="location"
+              class="form-control"
+              placeholder="Enter a location"
+              (input)="onLocationInput()"
+              required
+            />
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" type="submit">Search</button>
+            </div>
           </div>
-        </div>
-      </form>
-      <div class="weather-data mb-3" *ngIf="data && data.properties && data.properties.timeseries && data.properties.timeseries.length > 0">
-        <!-- Weather data -->
-        <p class="weather-item mb-3">{{ data?.properties?.meta?.units?.air_pressure_at_sea_level }}</p>
-        <p class="weather-item mb-3">{{ data?.properties?.timeseries[0]?.data?.instant?.details?.air_pressure_at_sea_level }}</p>
-        <div class="weather-item mb-3">
-          <span class="weather-label">Temperature:</span>
-          <span class="weather-value">{{ data?.properties?.timeseries[0]?.data?.instant?.details?.air_temperature }}</span>
-          <span class="weather-unit">&#8451;</span> <!-- This is the HTML entity for the Celsius symbol -->
-          <i [ngClass]="getWeatherIconClass(data.properties.timeseries[0].data.instant.details.air_temperature)" class="weather-icon"></i>
-        </div>
-          <p class="weather-item">{{ data?.properties?.meta?.units?.air_pressure_at_sea_level }}</p>
-          <p class="weather-item">{{ data?.properties?.timeseries[0]?.data?.instant?.details?.air_pressure_at_sea_level }}</p>
-          <p class="weather-item">{{ data?.properties?.meta?.units?.cloud_area_fraction }}</p>
-          <p class="weather-item">{{ data?.properties?.timeseries[0]?.data?.instant?.details?.cloud_area_fraction }}</p>
-          <p class="weather-item">{{ data?.properties?.meta?.units?.precipitation_amount }}</p>
-          <p class="weather-item">{{ data?.properties?.timeseries[0]?.data?.instant?.details?.precipitation_amount }}</p>
-          <p class="weather-item">{{ data?.properties?.meta?.units?.relative_humidity }}</p>
-          <p class="weather-item">{{ data?.properties?.timeseries[0]?.data?.instant?.details?.relative_humidity }}</p>
-          <p class="weather-item">{{ data?.properties?.meta?.units?.wind_from_direction }}</p>
-          <p class="weather-item">{{ data?.properties?.timeseries[0]?.data?.instant?.details?.wind_from_direction }}</p>
-          <p class="weather-item">{{ data?.properties?.meta?.units?.wind_speed }}</p>
-          <p class="weather-item">{{ data?.properties?.timeseries[0]?.data?.instant?.details?.wind_speed }}</p>
-        </div>
-<router-outlet />
+          
+          <!-- Display autocomplete suggestions -->
+          <ul class="suggestions-list" *ngIf="suggestions.length > 0">
+            <li *ngFor="let suggestion of suggestions" (click)="selectLocation(suggestion.description)">
+              {{ suggestion.description }}
+            </li>
+          </ul>
+        </form>
+        
+        <!-- Display selected location and weather data -->
+        <div class="weather-data mb-3" *ngIf="data?.properties?.timeseries?.length > 0">
+          <!-- Location Display -->
+          <h2 *ngIf="selectedLocation" class="text-center mb-3">Weather at {{ selectedLocation }}:</h2>
 
+          <!-- Temperature -->
+          <div *ngIf="data?.properties?.timeseries[0]?.data?.instant?.details?.air_temperature" class="weather-item mb-3">
+            <span class="weather-label">Temperature:</span>
+            <span class="weather-value">{{ data.properties.timeseries[0].data.instant.details.air_temperature }}</span>
+            <span class="weather-unit">&#8451;</span>
+            <i [ngClass]="getWeatherIconClass(data.properties.timeseries[0].data.instant.details.air_temperature)" class="weather-icon"></i>
+          </div>
 
+          <!-- Wind Speed -->
+          <div *ngIf="data?.properties?.timeseries[0]?.data?.instant?.details?.wind_speed" class="weather-item mb-3">
+            <span class="weather-label">Wind speed:</span>
+            <span class="weather-value">{{ data.properties.timeseries[0].data.instant.details.wind_speed }}</span>
+            <span class="weather-unit">m/s</span>
+          </div>
 
+          <!-- Air Pressure at Sea Level with Unit, Displayed Last -->
+          <p *ngIf="data?.properties?.timeseries[0]?.data?.instant?.details?.air_pressure_at_sea_level && data?.properties?.meta?.units?.air_pressure_at_sea_level" class="weather-item mb-3">
+            hPa: {{ data.properties.timeseries[0].data.instant.details.air_pressure_at_sea_level }}
+          </p>
+        </div>
+
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>
