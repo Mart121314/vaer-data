@@ -10,6 +10,7 @@ export class WeatherService {
   private apiUrl = 'https://api.met.no/weatherapi/locationforecast/2.0/complete';
   private geocodeUrl = 'https://api.opencagedata.com/geocode/v1/json';
   private geocodeApiKey = '9851479039a7467bb7bf913c52699b06';
+  private weatherApiKey = '9851479039a7467bb7bf913c52699b06';
 
   constructor(private http: HttpClient) {}
 
@@ -24,13 +25,22 @@ export class WeatherService {
           const weatherUrl = `${this.apiUrl}?lat=${lat}&lon=${lon}`;
           return this.http.get(weatherUrl);
         } else {
-          // Return an observable with an error if no results are found
-          return throwError('Location not found');
+          return throwError(() => new Error('Location not found'));
         }
       }),
       catchError((error) => {
         console.error('Error fetching weather data:', error);
-        return throwError(error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  getWeatherByCoordinates(lat: number, lon: number): Observable<any> {
+    const weatherUrl = `${this.apiUrl}?lat=${lat}&lon=${lon}`;
+    return this.http.get(weatherUrl).pipe(
+      catchError((error) => {
+        console.error('Error fetching weather data by coordinates:', error);
+        return throwError(() => error);
       })
     );
   }

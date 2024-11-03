@@ -22,6 +22,14 @@ export class AppComponent implements OnInit {
   suggestions: google.maps.places.AutocompletePrediction[] = [];
   bgImage = 'assets/sola.jpg';
   error: string | null = null;
+  currentLocationWeather: any = null;
+  staticLocations: any[] = [
+    { name: 'Oslo', lat: 59.91, lon: 10.75, data: null },
+    { name: 'Stockholm', lat: 59.33, lon: 18.06, data: null },
+    { name: 'London', lat: 51.51, lon: -0.13, data: null },
+    { name: 'New York', lat: 40.71, lon: -74.01, data: null }
+  ];
+
   private autocompleteService!: google.maps.places.AutocompleteService;
 
   constructor(
@@ -47,11 +55,59 @@ export class AppComponent implements OnInit {
     this.dataService.fetchData().subscribe((response: any) => {
       this.data = response;
     });
+
+    // Fetch weather data for static locations
+    this.fetchStaticLocationsWeather();
+
+    // Fetch weather data for the user's current location
+    this.fetchCurrentLocationWeather();
+  }
+
+  fetchStaticLocationsWeather() {
+    this.staticLocations.forEach(location => {
+      this.weatherService.getWeatherByCoordinates(location.lat, location.lon).subscribe((data: any) => {
+        location.data = data;
+      });
+    });
+  }
+
+  fetchCurrentLocationWeather() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        this.weatherService.getWeatherByCoordinates(lat, lon).subscribe((data: any) => {
+          this.currentLocationWeather = data;
+        });
+      }, error => {
+        console.error('Error getting location:', error);
+        this.error = 'Unable to retrieve your location';
+      });
+    } else {
+      console.error('Geolocation is not supported by this browser.');
+      this.error = 'Geolocation is not supported by this browser';
+    }
   }
 
   setSelectLocation(location: string) {
     this.selectedLocation = location;
     this.searchWeather();
+  }
+
+  searchWeather() {
+    if (this.location.trim()) {
+      this.weatherService.getWeather(this.location).subscribe({
+        next: (response) => {
+          this.data = response;
+          this.error = null;
+        },
+        error: (err) => {
+          console.error('Error:', err);
+          this.error = err.message || 'An error occurred';
+          this.data = null;
+        }
+      });
+    }
   }
 
   onLocationInput() {
@@ -84,31 +140,23 @@ export class AppComponent implements OnInit {
     this.searchWeather();
   }
 
-  searchWeather() {
-    if (this.location.trim()) {
-      this.weatherService.getWeather(this.location).subscribe({
-        next: (response) => {
-          this.data = response;
-          this.error = null;
-        },
-        error: (err) => {
-          console.error('Error:', err);
-          this.error = err.message || 'An error occurred';
-          this.data = null;
-        }
-      });
+  getWeatherIconClass(temperature: number, condition: string): string {
+    if (!condition) {
+      return 'wi wi-na'; // Return a default icon if condition is undefined
     }
-  }
 
-  getWeatherIconClass(temperature: number): string {
-    if (temperature < 0) {
-      return 'wi wi-snow';
-    } else if (temperature < 10) {
-      return 'wi wi-day-sunny-overcast';
-    } else {
+    if (condition.includes('clear')) {
       return 'wi wi-day-sunny';
+    } else if (condition.includes('cloud')) {
+      return 'wi wi-cloudy';
+    } else if (condition.includes('rain')) {
+      return 'wi wi-rain';
+    } else if (condition.includes('snow')) {
+      return 'wi wi-snow';
+    } else if (condition.includes('storm')) {
+      return 'wi wi-thunderstorm';
+    } else {
+      return 'wi wi-day-sunny'; // Default icon
     }
   }
 }
-
-

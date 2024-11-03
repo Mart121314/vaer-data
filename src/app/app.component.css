@@ -1,135 +1,83 @@
 body {
-    background-image: url('../assets/sola.jpg') !important;
-    background-size: cover !important;
-    background-repeat: no-repeat !important;
-  }
-  
-  .container {
-    width: 80%;
-    margin: auto;
-    overflow: hidden;
-  }
+  background: linear-gradient(to right, #6dd5fa, #2980b9); /* Gradient background */
+  color: #333; /* Dark text color for readability */
+  font-family: Arial, sans-serif;
+}
 
-  input[type="text"], .searchbar {
-    background: linear-gradient(to right, #ffffff, #e0e0e0); /* Gradient background */
-    border: 1px solid #ccc; /* Border color */
-    padding: 8px; /* Adjust padding as needed */
-    color: #333; /* Font color */
-    border-radius: 5px; /* Rounded corners */
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Optional shadow for depth */
-    width: 100%; /* Full width or adjust as desired */
-    font-size: 16px; /* Adjust font size as needed */
-  }
+.weather-data, .current-location-weather, .static-locations .weather-data {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: #ffffff; /* White background for contrast */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
 
-  .suggestions-list {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    border: 1px solid #ccc;
-    background: white;
-    position: absolute;
-    width: 100%;
-    z-index: 10;
-  }
-  
-  .suggestions-list li {
-    padding: 10px;
-    cursor: pointer;
-  }
-  
-  .suggestions-list li:hover {
-    background-color: #f0f0f0;
-  }
-  
-  header {
-    background: #50a3a2;
-    color: white;
-    padding-top: 30px;
-    min-height: 70px;
-    border-bottom: #e8491d 3px solid;
-  }
-  
-  header a {
-    color: #ffffff;
-    text-decoration: none;
-    text-transform: uppercase;
-    font-size: 16px;
-  }
-  
-  header li {
-    float: left;
-    display: inline;
-    padding: 0 20px 0 20px;
-  }
-  
-  header #branding {
-    float: left;
-  }
-  
-  header #branding h1 {
-    margin: 0;
-  }
-  
-  header nav {
-    float: right;
-    margin-top: 10px;
-  }
-  
-  header .highlight, header .current a {
-    color: #e8491d;
-    font-weight: bold;
-  }
-  
-  header a:hover {
-    color: #cccccc;
-    font-weight: bold;
-  }
-  
-  #showcase {
-    min-height: 400px;
-    background: no-repeat 0 -400px;
-    text-align: center;
-    color: #ffffff;
-  }
-  
-  #showcase h1 {
-    margin-top: 100px;
-    font-size: 55px;
-    margin-bottom: 10px;
-  }
-  
-  #showcase p {
-    font-size: 20px;
-  }
-  
-  footer {
-    padding: 20px;
-    margin-top: 20px;
-    color: #ffffff;
-    background-color: #e8491d;
-    text-align: center;
-  } .weather-data {
-    background-color: #f4f4f4;
-    padding: 20px;
-    border-radius: 10px;
-  }
-  
-  .weather-item {
-    font-size: 16px;
-    color: #333;
-  }
-  .weather-label {
-    margin-right: 1rem;
-  }
-  
-  .weather-value {
-    margin-right: 1rem;
-  }
-  
-  .weather-unit {
-    margin-right: 1rem;
-  }
-  
-  .weather-icon {
-    margin-right: 1rem;
-  }
+.weather-label {
+  font-weight: bold;
+  color: #00796b; /* Teal color for labels */
+}
+
+.weather-value {
+  margin-left: 8px;
+  color: #004d40; /* Darker teal for values */
+}
+
+.weather-unit {
+  margin-left: 4px;
+  color: #004d40; /* Darker teal for units */
+}
+
+.weather-icon {
+  margin-left: 8px;
+  font-size: 24px;
+  color: #ff9800; /* Orange color for icons */
+}
+
+.suggestions-list {
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: #ffffff; /* White background for suggestions */
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.suggestions-list .list-group-item {
+  cursor: pointer;
+  color: #00796b; /* Teal color for suggestions */
+}
+
+.suggestions-list .list-group-item:hover {
+  background-color: #b2dfdb; /* Light teal background on hover */
+}
+
+h1, h2, h3 {
+  color: #00796b; /* Teal color for headers */
+}
+
+.input-group .form-control {
+  border: 1px solid #00796b; /* Teal border for input */
+}
+
+.input-group .btn {
+  background-color: #00796b; /* Teal background for button */
+  color: #ffffff; /* White text color for button */
+}
+
+.input-group .btn:hover {
+  background-color: #004d40; /* Darker teal on hover */
+}
+
+.container {
+  margin-top: 20px;
+}
+
+.row {
+  justify-content: center;
+}
+
+.col-md-8 {
+  background-color: #ffffff; /* White background for main content */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}

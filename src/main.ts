@@ -6,6 +6,6 @@ import { provideHttpClient, withFetch } from '@angular/common/http';
 bootstrapApplication(AppComponent, {
   providers: [
     provideHttpClient(withFetch()), // Configures HttpClient to use fetch API
-    ...appConfig.providers // if you have other providers from appConfig
+    ...appConfig.providers // Include additional providers from appConfig
   ],
 }).catch((err) => console.error(err));
