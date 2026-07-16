@@ -23,9 +23,6 @@
     ],
     "typeRoots": [
       "./node_modules/@types"
-    ],
-    "types": [
-      "google.maps"  // Load Google Maps types explicitly
     ]
   },
   "angularCompilerOptions": {
