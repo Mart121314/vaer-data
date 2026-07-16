@@ -12,7 +12,7 @@ import { CommonModule, NgIf, isPlatformBrowser } from '@angular/common';
   standalone: true,
   imports: [RouterOutlet, HttpClientModule, FormsModule, NgIf, CommonModule],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css', '/node_modules/bootstrap/dist/css/bootstrap.min.css', '/node_modules/weather-icons/css/weather-icons.min.css'],
+  styleUrls: ['./app.component.css'],
   providers: [DataService, WeatherService]
 })
 export class AppComponent implements OnInit {
@@ -20,6 +20,7 @@ export class AppComponent implements OnInit {
   location: string = '';
   selectedLocation: string = '';
   suggestions: google.maps.places.AutocompletePrediction[] = [];
+  selectedSuggestionIndex: number = -1;
   bgImage = 'assets/sola.jpg';
   error: string | null = null;
   currentLocationWeather: any = null;
@@ -51,16 +52,20 @@ export class AppComponent implements OnInit {
       initAutocompleteService();
     }
 
-    // Fetch initial data if necessary
-    this.dataService.fetchData().subscribe((response: any) => {
-      this.data = response;
-    });
+    // Data fetching relies on browser-only APIs (geolocation) and should not
+    // run during server-side rendering/prerendering.
+    if (isPlatformBrowser(this.platformId)) {
+      // Fetch initial data if necessary
+      this.dataService.fetchData().subscribe((response: any) => {
+        this.data = response;
+      });
 
-    // Fetch weather data for static locations
-    this.fetchStaticLocationsWeather();
+      // Fetch weather data for static locations
+      this.fetchStaticLocationsWeather();
 
-    // Fetch weather data for the user's current location
-    this.fetchCurrentLocationWeather();
+      // Fetch weather data for the user's current location
+      this.fetchCurrentLocationWeather();
+    }
   }
 
   fetchStaticLocationsWeather() {

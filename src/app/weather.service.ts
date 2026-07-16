@@ -10,7 +10,6 @@ export class WeatherService {
   private apiUrl = 'https://api.met.no/weatherapi/locationforecast/2.0/complete';
   private geocodeUrl = 'https://api.opencagedata.com/geocode/v1/json';
   private geocodeApiKey = '9851479039a7467bb7bf913c52699b06';
-  private weatherApiKey = '9851479039a7467bb7bf913c52699b06';
 
   constructor(private http: HttpClient) {}
 
